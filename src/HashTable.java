@@ -36,9 +36,33 @@ public class HashTable
         for(int i = 0; i < nodes.length; i++)
         {
             if(nodes[i] != null)
-                output += nodes[i];
+                output += "" + i + ":" + nodes[i] + " ";
         }
 
         return output;
+    }
+
+    public class Node
+    {
+        public Object key;
+        public Object value;
+        public boolean isRemoved;
+
+        public Node()
+        {
+            key = null;
+            value = null;
+        }
+
+        public Node(Object key, Object value)
+        {
+            this.key = key;
+            this.value = value;
+        }
+
+        public String toString()
+        {
+            return "<"+key+", "+value+">";
+        }
     }
 }

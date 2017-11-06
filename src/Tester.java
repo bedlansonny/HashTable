@@ -6,6 +6,13 @@ public class Tester
     {
         Scanner sc = new Scanner(new File("input.txt"));
 
+        HashTable table = new HashTable();
 
+        while(sc.hasNext())
+        {
+            table.put(sc.nextInt(), sc.nextLine().trim());
+        }
+
+        System.out.println(table);
     }
 }
