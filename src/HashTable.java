@@ -1,16 +1,19 @@
-//no collision handling
+//next step: implement linear probing
 public class HashTable
 {
     Node[] nodes;
+    int size;
 
     public HashTable()
     {
         nodes = new Node[101];
+        size = 0;
     }
 
     public HashTable(int initCap)
     {
         nodes = new Node[initCap];
+        size = 0;
     }
 
     public Object put(Object key, Object value)
@@ -20,7 +23,14 @@ public class HashTable
         if(nodes[hash] != null)
             output = nodes[hash].value;
         nodes[hash] = new Node(key, value);
+        size++;
         return output;
+    }
+
+    //is the parameter supposed to be the key or a node?
+    public Object remove()
+    {
+        
     }
 
     public Object get(Object key)
@@ -46,18 +56,20 @@ public class HashTable
     {
         public Object key;
         public Object value;
-        public boolean isRemoved;
+        public boolean removed;
 
         public Node()
         {
             key = null;
             value = null;
+            removed = false;
         }
 
         public Node(Object key, Object value)
         {
             this.key = key;
             this.value = value;
+            removed = false;
         }
 
         public String toString()
