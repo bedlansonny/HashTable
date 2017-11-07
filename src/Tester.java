@@ -14,5 +14,13 @@ public class Tester
         }
 
         System.out.println(table);
+        System.out.println(table.get(2242));
+        table.remove(2242);
+        System.out.println(table);
+        System.out.println(table.get(23));
+        System.out.println(table.get(21));
+        System.out.println(table.get(20));
+        table.put(21, "Parker");
+        System.out.println(table);
     }
 }
