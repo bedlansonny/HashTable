@@ -4,7 +4,23 @@ public class Tester
 {
     public static void main(String args[]) throws IOException
     {
-        Scanner sc = new Scanner(new File("input.txt"));
+        ArrayList<String> words = new ArrayList<>(50000);
+        Scanner sc = new Scanner(new File("Large Data Set.txt"));
+        while(sc.hasNext())
+            words.add(sc.nextLine());
+
+        ArrayList<String> successes = new ArrayList<>(50000);
+        sc = new Scanner(new File("Successful Search Records.txt"));
+        while(sc.hasNext())
+            words.add(sc.nextLine());
+
+        ArrayList<String> failures = new ArrayList<>(50000);
+        sc = new Scanner(new File("Unsuccessful Search Records.txt"));
+        while(sc.hasNext())
+            words.add(sc.nextLine());
+
+
+
 
         HashTable table = new HashTable();
 

@@ -24,23 +24,15 @@ public class HashTable
 
         int currentIndex = key.hashCode() % nodes.length;
 
-        //if node is null the first time, store value, size++, return null
-        //if node is duplicate, overwrite, return old value
-        //if node is removed or null after first time, store value, size++, then:
-            //keep searching until node is null, then return null
-            //if node is duplicate, mark it removed and size--, return null
-        //if else, next
-
-        if(nodes[currentIndex] == null)
-        {
-            nodes[currentIndex] = new Node(key, value);
-            size++;
-            return null;
-        }
-
         while(true)
         {
-            if(nodes[currentIndex] == null || nodes[currentIndex].removed)
+            if(nodes[currentIndex] == null)
+            {
+                nodes[currentIndex] = new Node(key, value);
+                size++;
+                return null;
+            }
+            else if(nodes[currentIndex].removed)
             {
                 nodes[currentIndex] = new Node(key, value);
                 size++;
