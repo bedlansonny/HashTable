@@ -1,4 +1,3 @@
-//are duplicates when the key is the same?
 public class HashTable
 {
     Node[] nodes;
