@@ -3,16 +3,44 @@ public class HashTable
     Node[] nodes;
     int size;
 
+    //testing purposes
+    int collisionCount;
+    int checkCount;
+
     public HashTable()
     {
         nodes = new Node[101];
         size = 0;
+        collisionCount = 0;
+        checkCount = 0;
     }
 
     public HashTable(int initCap)
     {
         nodes = new Node[initCap];
         size = 0;
+        collisionCount = 0;
+        checkCount = 0;
+    }
+
+    public void resetCheckCount()
+    {
+        checkCount = 0;
+    }
+
+    public int getCheckCount()
+    {
+        return checkCount;
+    }
+
+    public int getCollisionCount()
+    {
+        return collisionCount;
+    }
+
+    public int getCapacity()
+    {
+        return nodes.length;
     }
 
     public Object put(Object key, Object value)
@@ -58,7 +86,11 @@ public class HashTable
                 return output;
             }
             else
+            {
                 currentIndex = increment(currentIndex);
+                collisionCount++;
+            }
+
         }
     }
 
@@ -100,7 +132,11 @@ public class HashTable
             else if(!nodes[currentIndex].removed && nodes[currentIndex].key.equals(key))
                 return nodes[currentIndex].value;
             else
+            {
                 currentIndex = increment(currentIndex);
+                checkCount++;
+            }
+
         }
     }
 
