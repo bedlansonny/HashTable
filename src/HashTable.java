@@ -4,15 +4,13 @@ public class HashTable
     int size;
 
     //testing purposes
-    int collisionCount;
-    int checkCount;
+    long collisionCount;
 
     public HashTable()
     {
         nodes = new Node[101];
         size = 0;
         collisionCount = 0;
-        checkCount = 0;
     }
 
     public HashTable(int initCap)
@@ -20,22 +18,16 @@ public class HashTable
         nodes = new Node[initCap];
         size = 0;
         collisionCount = 0;
-        checkCount = 0;
     }
 
-    public void resetCheckCount()
-    {
-        checkCount = 0;
-    }
-
-    public int getCheckCount()
-    {
-        return checkCount;
-    }
-
-    public int getCollisionCount()
+    public long getCollisionCount()
     {
         return collisionCount;
+    }
+
+    public void resetCollisionCount()
+    {
+        collisionCount = 0;
     }
 
     public int getCapacity()
@@ -49,7 +41,7 @@ public class HashTable
         if(size == nodes.length)
             return null;
 
-        int currentIndex = key.hashCode() % nodes.length;
+        int currentIndex = Math.abs(key.hashCode()) % nodes.length;
 
         while(true)
         {
@@ -97,7 +89,7 @@ public class HashTable
     //is the parameter supposed to be the key or a node?
     public Object remove(Object key)
     {
-        int currentIndex = key.hashCode() % nodes.length;
+        int currentIndex = Math.abs(key.hashCode()) % nodes.length;
 
         //if node is null return null
         //if node isn't removed and is correct key, remove, decrement size, and return value
@@ -120,7 +112,7 @@ public class HashTable
 
     public Object get(Object key)
     {
-        int currentIndex = key.hashCode() % nodes.length;
+        int currentIndex = Math.abs(key.hashCode()) % nodes.length;
 
         //if node is null return null
         //if node isn't removed and is correct key, return value
@@ -134,7 +126,7 @@ public class HashTable
             else
             {
                 currentIndex = increment(currentIndex);
-                checkCount++;
+                collisionCount++;
             }
 
         }
