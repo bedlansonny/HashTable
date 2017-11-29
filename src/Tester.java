@@ -11,70 +11,81 @@ public class Tester
 {
     public static void main(String args[]) throws IOException
     {
-        ArrayList<String> words = new ArrayList<>(50000);
+        ArrayList<String> words = new ArrayList<>(500000);
         Scanner sc = new Scanner(new File("Large Data Set.txt"));
         while(sc.hasNext())
             words.add(sc.nextLine());
 
-        ArrayList<String> goodSearches = new ArrayList<>(1000);
-        sc = new Scanner(new File("Successful Search Records.txt"));
+        ArrayList<String> goodSearches = new ArrayList<>(10000);
+        sc = new Scanner(new File("Successful Search.txt"));
         while(sc.hasNext())
             goodSearches.add(sc.nextLine());
 
-        ArrayList<String> badSearches = new ArrayList<>(1000);
-        sc = new Scanner(new File("Unsuccessful Search Records.txt"));
+        ArrayList<String> badSearches = new ArrayList<>(10000);
+        sc = new Scanner(new File("Unsuccessful Search.txt"));
         while(sc.hasNext())
             badSearches.add(sc.nextLine());
 
-        double[] loadfactors = {.1, .5, .8, .9, 1.0};
+        PrintWriter fileWriter = new PrintWriter(new File("testoutput3.csv"));
 
-        for(int i = 0; i < 5; i++)
+
+        //double[] loadfactors = {.1, .5, .8, .9, 1.0};
+
+        fileWriter.printf("Load Factor,Average Number of probes to build table,Average insertion time,Average Number of probes to find an entry,Average time to find table entry,Average Number of probes to determine entry isn't present,Average time to determine entry isn't present%n");
+
+        for(double i = .1; i <= 1.01; i+=.01)
         {
-            HashTable table = new HashTable(closestPrime((int)(words.size()/loadfactors[i])));
+            HashTable table = new HashTable(closestPrime((int)(words.size()/i)));
 
-            long buildStartTime = System.nanoTime();
+            long buildStartTime = System.currentTimeMillis();
             for(String entry : words)
             {
                 table.put(Integer.parseInt(entry.substring(0, entry.indexOf(" "))), entry.substring(entry.indexOf(" ")+1));
             }
-            long buildEndTime = System.nanoTime();
+            long buildEndTime = System.currentTimeMillis();
             long buildDuration = buildEndTime - buildStartTime;
             long collisionCount = table.getCollisionCount();
 
             table.resetCollisionCount();
-            long goodSearchStartTime = System.nanoTime();
+            long goodSearchStartTime = System.currentTimeMillis();
             for(String entry : goodSearches)
             {
                 table.get(Integer.parseInt(entry.substring(0, entry.indexOf(" "))));
             }
-            long goodSearchEndTime = System.nanoTime();
+            long goodSearchEndTime = System.currentTimeMillis();
             long goodSearchDuration = goodSearchEndTime - goodSearchStartTime;
             long goodCheckCount = table.getCollisionCount();
 
             table.resetCollisionCount();
-            long badSearchStartTime = System.nanoTime();
+            long badSearchStartTime = System.currentTimeMillis();
             for(String entry : badSearches)
             {
                 table.get(Integer.parseInt(entry.substring(0, entry.indexOf(" "))));
             }
-            long badSearchEndTime = System.nanoTime();
+            long badSearchEndTime = System.currentTimeMillis();
             long badSearchDuration = badSearchEndTime - badSearchStartTime;
             long badCheckCount = table.getCollisionCount();
 
             //print this data to a text file
-            //System.out.println("Collision handling: Linear probing");
-            //System.out.println("Hash function: none (just key%size)");
-            System.out.println("Entry count: " + words.size() + "\nTable size: " + table.getCapacity() + "\nLoad factor: " + (double)words.size()/table.getCapacity());
+            /*
+            //fileWriter.println("Collision handling: Linear probing");
+            //fileWriter.println("Hash function: none (just key%size)");
+            fileWriter.println("Entry count: " + words.size() + "\nTable size: " + table.getCapacity() + "\nLoad factor: " + (double)words.size()/table.getCapacity());
             //check the accuracy of these numbers... !!
-            System.out.printf("Average insertion time: %d nanoseconds%n", Math.round(buildDuration/words.size()));
-            System.out.printf("Number of table insertion collisions: %d%n", collisionCount);
-            System.out.printf("Number of collisions vs number of insertions: %f%%%n", ((double)collisionCount/words.size())*100);
-            System.out.printf("Average time to find a table entry: %d nanoseconds%n", Math.round(goodSearchDuration/goodSearches.size()));
-            System.out.printf("Average number of probes to find a table entry: %.5f%n", ((double)goodCheckCount/(double)goodSearches.size()));
-            System.out.printf("Average time to determine entry is not in table: %d nanoseconds%n", Math.round((badSearchDuration/badSearches.size())));
-            System.out.printf("Average number of probes to determine entry is not in table: %.5f%n", (double)badCheckCount/(double)badSearches.size());
-            System.out.println();
+            fileWriter.printf("Average insertion time: %d nanoseconds%n", Math.round(buildDuration/words.size()));
+            fileWriter.printf("Number of table insertion collisions: %d%n", collisionCount);
+            fileWriter.printf("Number of collisions vs number of insertions: %f%%%n", ((double)collisionCount/words.size())*100);
+            fileWriter.printf("Average time to find a table entry: %d nanoseconds%n", Math.round(goodSearchDuration/goodSearches.size()));
+            fileWriter.printf("Average number of probes to find a table entry: %.5f%n", ((double)goodCheckCount/(double)goodSearches.size()));
+            fileWriter.printf("Average time to determine entry is not in table: %d nanoseconds%n", Math.round((badSearchDuration/badSearches.size())));
+            fileWriter.printf("Average number of probes to determine entry is  not in table: %.5f%n", (double)badCheckCount/(double)badSearches.size());
+            fileWriter.println();
+            */
+            fileWriter.printf("%f,%.10f,%f,%f,%.10f,%f,%.10f%n", i, (double)collisionCount/(double)words.size(), (double)buildDuration/(double)words.size(), ((double)goodCheckCount/(double)goodSearches.size()), (double)goodSearchDuration/(double)goodSearches.size(), (double)badCheckCount/(double)badSearches.size(), ((double)badSearchDuration/(double)badSearches.size()));
+
         }
+        
+        fileWriter.close();
     }
 
     public static int closestPrime(int min)
