@@ -1,10 +1,4 @@
-//NOTE: SHOULD BE AVERAGES OF PROBES AND TIMES, NOT TOTALS!!!
-
-
-
-
-//"build a name object"???? in search record steps !!
-//export into .csv file instead of .txt so it can be a spreadsheet
+//build a Name class, with a hashcode method, equals method to compare first and last, and get/set for first and last names
 import java.util.*;
 import java.io.*;
 public class Tester
@@ -26,16 +20,16 @@ public class Tester
         while(sc.hasNext())
             badSearches.add(sc.nextLine());
 
-        PrintWriter fileWriter = new PrintWriter(new File("testoutput3.csv"));
+        PrintWriter fileWriter = new PrintWriter(new File("quadoutput1.csv"));
 
 
         //double[] loadfactors = {.1, .5, .8, .9, 1.0};
 
         fileWriter.printf("Load Factor,Average Number of probes to build table,Average insertion time,Average Number of probes to find an entry,Average time to find table entry,Average Number of probes to determine entry isn't present,Average time to determine entry isn't present%n");
 
-        for(double i = .1; i <= 1.01; i+=.01)
+        for(double i = .1; i <= 1; i+=.1)
         {
-            HashTable table = new HashTable(closestPrime((int)(words.size()/i)));
+            HashTableQuad table = new HashTableQuad(closestPrime((int)(words.size()/i)));
 
             long buildStartTime = System.currentTimeMillis();
             for(String entry : words)

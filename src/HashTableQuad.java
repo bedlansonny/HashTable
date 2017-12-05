@@ -1,4 +1,4 @@
-public class HashTable
+public class HashTableQuad
 {
     Node[] nodes;
     int size;
@@ -6,14 +6,14 @@ public class HashTable
     //testing purposes
     long collisionCount;
 
-    public HashTable()
+    public HashTableQuad()
     {
         nodes = new Node[101];
         size = 0;
         collisionCount = 0;
     }
 
-    public HashTable(int initCap)
+    public HashTableQuad(int initCap)
     {
         nodes = new Node[initCap];
         size = 0;
@@ -41,9 +41,11 @@ public class HashTable
         if(size == nodes.length)
             return null;
 
-        int currentIndex = Math.abs(key.hashCode()) % nodes.length;
+        int base = Math.abs(key.hashCode()) % nodes.length;
+        int currentIndex = base;
+        int collisionCountTemp = 0;
 
-        while(true)
+        while(collisionCountTemp <= 1000)
         {
             if(nodes[currentIndex] == null)
             {
@@ -57,7 +59,7 @@ public class HashTable
                 size++;
 
                 currentIndex++;
-                while(true)
+                while(collisionCountTemp <= 1000)
                 {
                     if(nodes[currentIndex] == null)
                         return null;
@@ -69,8 +71,9 @@ public class HashTable
                     }
                     else
                     {
-                        currentIndex = (currentIndex+1)%nodes.length;
-                        collisionCount++;
+                        currentIndex = (base+(int)Math.pow(collisionCountTemp,2))%nodes.length;
+                        collisionCountTemp++;
+                        //collisionCount++;
                     }
 
                 }
@@ -83,22 +86,25 @@ public class HashTable
             }
             else
             {
-                currentIndex = (currentIndex+1)%nodes.length;
+                currentIndex = (base+(int)Math.pow(collisionCountTemp,2))%nodes.length;
+                collisionCountTemp++;
                 collisionCount++;
             }
-
         }
+        return null;
     }
 
     //is the parameter supposed to be the key or a node?
     public Object remove(Object key)
     {
-        int currentIndex = Math.abs(key.hashCode()) % nodes.length;
+        int base = Math.abs(key.hashCode()) % nodes.length;
+        int currentIndex = base;
+        int collisionCountTemp = 0;
 
         //if node is null return null
         //if node isn't removed and is correct key, remove, decrement size, and return value
         //if else check next
-        while(true)
+        while(collisionCountTemp <= 1000)
         {
             if(nodes[currentIndex] == null)
                 return null;
@@ -110,22 +116,24 @@ public class HashTable
             }
             else
             {
-                currentIndex = (currentIndex+1)%nodes.length;
+                currentIndex = (base+(int)Math.pow(collisionCountTemp,2))%nodes.length;
+                collisionCountTemp++;
                 collisionCount++;
             }
-
-
         }
+        return null;
     }
 
     public Object get(Object key)
     {
-        int currentIndex = Math.abs(key.hashCode()) % nodes.length;
+        int base = Math.abs(key.hashCode()) % nodes.length;
+        int currentIndex = base;
+        int collisionCountTemp = 0;
 
         //if node is null return null
         //if node isn't removed and is correct key, return value
         //if else check next
-        while(true)
+        while(collisionCountTemp <= 1000)
         {
             if(nodes[currentIndex] == null)
                 return null;
@@ -133,11 +141,13 @@ public class HashTable
                 return nodes[currentIndex].value;
             else
             {
-                currentIndex = (currentIndex+1)%nodes.length;
+                currentIndex = (base+(int)Math.pow(collisionCountTemp,2))%nodes.length;
+                collisionCountTemp++;
                 collisionCount++;
             }
 
         }
+        return null;
     }
 
     public String toString()
