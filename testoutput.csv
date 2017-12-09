@@ -1,6 +1,0 @@
-Load Factor,Average Number of probes to build table,Average insertion time,Average Number of probes to find an entry,Average time to find table entry,Average Number of probes to determine entry isn't present,Average time to determine entry isn't present
-0.1,0.052734,0.000406,0.051,0.0016,0.1069,0
-0.5,0.497712,0.000468,0.4735,0.0016,1.5089,0
-0.8,1.986936,0.00053,1.9935,0,11.6243,0.0016
-0.9,4.520556,0.000498,4.6269,0.0016,48.7255,0.0016
-1,423.54534,0.023478,288.1932,0.0109,249949.2242,8.7504
