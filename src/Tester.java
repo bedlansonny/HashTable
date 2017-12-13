@@ -11,16 +11,16 @@ public class Tester
             words.add(sc.nextLine());
 
         ArrayList<String> goodSearches = new ArrayList<>(10000);
-        sc = new Scanner(new File("Successful Search.txt"));
+        sc = new Scanner(new File("Successful Search Records.txt"));
         while(sc.hasNext())
             goodSearches.add(sc.nextLine());
 
         ArrayList<String> badSearches = new ArrayList<>(10000);
-        sc = new Scanner(new File("Unsuccessful Search.txt"));
+        sc = new Scanner(new File("Unsuccessful Search Records.txt"));
         while(sc.hasNext())
             badSearches.add(sc.nextLine());
 
-        PrintWriter fileWriter = new PrintWriter(new File("quadoutput1.csv"));
+        PrintWriter fileWriter = new PrintWriter(new File("personlinearoutput1.csv"));
 
 
         //double[] loadfactors = {.1, .5, .8, .9, 1.0};
@@ -29,12 +29,15 @@ public class Tester
 
         for(double i = .1; i <= 1; i+=.1)
         {
-            HashTableQuad table = new HashTableQuad(closestPrime((int)(words.size()/i)));
+            HashTable table = new HashTable(closestPrime((int)(words.size()/i)));
 
             long buildStartTime = System.currentTimeMillis();
             for(String entry : words)
             {
-                table.put(Integer.parseInt(entry.substring(0, entry.indexOf(" "))), entry.substring(entry.indexOf(" ")+1));
+                String[] splitInput = entry.split("\t");
+                Person person = new Person(splitInput[0], splitInput[1], splitInput[2], splitInput[3], splitInput[4]);
+                table.put(person.name, person);
+                
             }
             long buildEndTime = System.currentTimeMillis();
             long buildDuration = buildEndTime - buildStartTime;
@@ -44,7 +47,8 @@ public class Tester
             long goodSearchStartTime = System.currentTimeMillis();
             for(String entry : goodSearches)
             {
-                table.get(Integer.parseInt(entry.substring(0, entry.indexOf(" "))));
+                String[] splitInput = entry.split("\t");
+                table.get(new Name(splitInput[0], splitInput[1]));
             }
             long goodSearchEndTime = System.currentTimeMillis();
             long goodSearchDuration = goodSearchEndTime - goodSearchStartTime;
@@ -54,7 +58,8 @@ public class Tester
             long badSearchStartTime = System.currentTimeMillis();
             for(String entry : badSearches)
             {
-                table.get(Integer.parseInt(entry.substring(0, entry.indexOf(" "))));
+                String[] splitInput = entry.split("\t");
+                table.get(new Name(splitInput[0], splitInput[1]));
             }
             long badSearchEndTime = System.currentTimeMillis();
             long badSearchDuration = badSearchEndTime - badSearchStartTime;

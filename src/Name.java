@@ -1,3 +1,5 @@
+import java.math.BigInteger;
+
 public class Name
 {
     String first;
@@ -11,6 +13,14 @@ public class Name
 
         updateHashCode();
 
+    }
+
+    public boolean equals(Name otherName)
+    {
+        if(this.first == otherName.first && this.last == otherName.last)
+            return true;
+        else
+            return false;
     }
 
     public int hashCode()
@@ -33,32 +43,34 @@ public class Name
         {
             firstAsciiComboStr += "" + (int)firstChars[i];
         }
-        long firstAsciiCombo = Long.valueOf(firstAsciiComboStr);
+        BigInteger firstAsciiCombo = new BigInteger(firstAsciiComboStr);
 
         String lastAsciiComboStr = "";
         for(int i = 0; i < lastChars.length; i++)
         {
             lastAsciiComboStr += "" + (int)lastChars[i];
         }
-        long lastAsciiCombo = Long.valueOf(lastAsciiComboStr);
+        BigInteger lastAsciiCombo = new BigInteger(lastAsciiComboStr);
 
         //convert the sum of the two long values of these concatenated new numbers into binary
-        long sumDec = firstAsciiCombo + lastAsciiCombo;
-        String sumBinary = Long.toBinaryString(sumDec);
+        BigInteger sumDec = firstAsciiCombo.add(lastAsciiCombo);
+        String sumBinary = sumDec.toString(2);
         if(sumBinary.length() % 2 == 1)
             sumBinary = "0" + sumBinary;
 
         //split the binary in half and combine them, with every other digit being from the other
         String binaryOne = sumBinary.substring(0, sumBinary.length()/2);
         String binaryTwo = sumBinary.substring(sumBinary.length()/2);
+
         String binaryCombo = "";
         for(int i = 0; i < sumBinary.length()/2; i++)
         {
-            binaryCombo += binaryOne.charAt(i) + binaryTwo.charAt(i);
+            binaryCombo += "" + binaryOne.charAt(i) + binaryTwo.charAt(i);
         }
 
         //convert into base ten
-        int finalHashCode = Integer.valueOf(binaryCombo, 2);
-        hashCode = finalHashCode;
+        BigInteger finalHashCode = new BigInteger(binaryCombo, 2);
+        finalHashCode = finalHashCode.mod(new BigInteger(Integer.toString(Integer.MAX_VALUE)));
+        hashCode = finalHashCode.intValueExact();
     }
 }
