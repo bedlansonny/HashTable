@@ -40,66 +40,60 @@ public class HashTableChain
     public Object put(Object key, Object value)
     {
         int currentIndex = Math.abs(key.hashCode()) % lists.length;
+
+        if(lists[currentIndex] == null)
+            lists[currentIndex] = new LinkedList<>();
+
+        if(lists[currentIndex].contains(new Node(key, null)))
+            return null;
+
         lists[currentIndex].addLast(new Node(key, value));
         size++;
+        collisionCount++;
+        return value;
     }
 
     //is the parameter supposed to be the key or a node?
-    public Object remove(Object key)
+    public boolean remove(Object key)
     {
         int currentIndex = Math.abs(key.hashCode()) % lists.length;
 
-        //if node isn't return null
-        //if node isn't removed and is correct key, remove, decrement size, and return value
-        if(lists[currentIndex].contains(key))
+        //if node isn't present return false
+        //if node isn't removed and is correct key, remove, decrement size, and return true
+        if(lists[currentIndex].removeFirstOccurrence(new Node(key, null)))
         {
-            /////////////////////////////////////////////////////////////////////////////unfinished/////////////////////////////////////////////////////////////////////////
+            size--;
+            return true;
         }
         else
-        {
-            return null;
-        }
+            return false;
+
 
     }
 
     public Object get(Object key)
     {
-        int currentIndex = Math.abs(key.hashCode()) % nodes.length;
+        int currentIndex = Math.abs(key.hashCode()) % lists.length;
 
-        //if node is null return null
-        //if node isn't removed and is correct key, return value
-        //if else check next
-        while(true)
+        /////////////////////////////////////////////////////////////////////////////unfinished/////////////////////////////////////////////////////////////////////////
+
+        //use foreach loop
+        if(lists[currentIndex] == null)
+            return null;
+
+        for(Node n : lists[currentIndex])
         {
-            if(nodes[currentIndex] == null)
-                return null;
-            else if(!nodes[currentIndex].removed && nodes[currentIndex].key.equals(key))
-                return nodes[currentIndex].value;
-            else
-            {
-                currentIndex = (currentIndex+1)%nodes.length;
-                collisionCount++;
-            }
-
+            collisionCount++;
+            if(n.key.equals(key))
+                return n.value;
         }
+        return null;
     }
 
     public String toString()
     {
         String output = "";
 
-        for(int i = 0; i < nodes.length; i++)
-        {
-            if(nodes[i] != null)
-            {
-                output += "" + i + ": ";
-                if(nodes[i].removed)
-                    output += "<dummy>\n";
-                else
-                    output += nodes[i] + "\n";
-            }
-
-        }
 
         return output;
     }
@@ -108,20 +102,22 @@ public class HashTableChain
     {
         public Object key;
         public Object value;
-        public boolean removed;
 
         public Node()
         {
             key = null;
             value = null;
-            removed = false;
         }
 
         public Node(Object key, Object value)
         {
             this.key = key;
             this.value = value;
-            removed = false;
+        }
+
+        public boolean equals(Node otherNode)
+        {
+            return this.key.equals(otherNode.key);
         }
 
         public String toString()

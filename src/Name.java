@@ -17,10 +17,7 @@ public class Name
 
     public boolean equals(Name otherName)
     {
-        if(this.first == otherName.first && this.last == otherName.last)
-            return true;
-        else
-            return false;
+        return this.first == otherName.first && this.last == otherName.last;
     }
 
     public int hashCode()

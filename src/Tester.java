@@ -20,7 +20,7 @@ public class Tester
         while(sc.hasNext())
             badSearches.add(sc.nextLine());
 
-        PrintWriter fileWriter = new PrintWriter(new File("personlinearoutput1.csv"));
+        PrintWriter fileWriter = new PrintWriter(new File("personchainingoutput.csv"));
 
 
         //double[] loadfactors = {.1, .5, .8, .9, 1.0};
@@ -29,7 +29,7 @@ public class Tester
 
         for(double i = .1; i <= 1; i+=.1)
         {
-            HashTable table = new HashTable(closestPrime((int)(words.size()/i)));
+            HashTableChain table = new HashTableChain(closestPrime((int)(words.size()/i)));
 
             long buildStartTime = System.currentTimeMillis();
             for(String entry : words)
